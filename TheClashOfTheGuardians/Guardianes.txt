@@ -1,44 +1,44 @@
-Gandalf,Mage,40,20,10
-Dracula,Necromancer,30,25,15
-Thor,Viking,50,30,20
-Medusa,Beast,35,35,25
-Merlin,Mage,45,25,15
-Frankenstein,Necromancer,25,30,30
-Lagertha,Viking,40,35,20
-Kraken,Beast,55,40,30
-Athena,Mage,35,25,20
-Zombie,Necromancer,20,30,35
-Odin,Viking,60,35,25
-Dragon,Beast,70,50,40
-The_conqueror_Jack,Mage,55,45,25
-Queen_of_Shadows,Necromancer,40,45,30
-Bjorn_the_Brave,Viking,70,40,30
-Cerberus,Beast,80,60,50
-Sorceress_Morgana,Mage,50,35,20
-Mad_Scientist_Igor,Necromancer,30,40,45
-Ragnar_the_Fierce,Viking,75,50,35
-Hydra,Beast,90,70,55
-Valeria_the_Enchantress,Mage,45,40,25
-Captain_Hook,Necromancer,35,45,40
-Erik_the_Red,Viking,80,45,40
-Phoenix,Beast,100,80,60
-The_mysterious_Masked_Magician,Mage,60,50,30
-Mistress_of_Shadows_and_Deception,Necromancer,50,60,40
-Ivar_the_Boneless,Viking,90,55,45
-Chimera,Beast,110,90,70
-Luna_the_Moonlit_Mage,Mage,65,55,35
-Baron_von_Bloodsucker,Necromancer,40,55,60
-Leif_the_Lucky,Viking,85,50,45
-Thunderbird,Beast,120,100,80
-The_Enigmatic_Enchantress,Mage,70,60,40
-Blackbeard_the_Cursed,Necromancer,45,60,55
-Astrid_the_Fearless,Viking,95,55,50
-Krampus,Beast, 130, 110, 90
-Midnight_Mysteria,Mage,75,65,45
-Countess_Vampira,Necromancer,50,65,70
-Rollo_the_Mighty,Viking,100,60,55
-Manticore,Beast,140,120,100
-Mystic_Magellan,Mage,80,70,50
-Lord_Lich,Necromancer,55,70,75
-Sigrid_the_Swift,Viking,105,65,60
-Serpent_King,Beast,150,130,110
+Gandalf,Mago,40,20,10
+Dracula,Nigromante,30,25,15
+Thor,Vikingo,50,30,20
+Medusa,Bestia,35,35,25
+Merlin,Mago,45,25,15
+Frankenstein,Nigromante,25,30,30
+Lagertha,Vikingo,40,35,20
+Kraken,Bestia,55,40,30
+Athena,Mago,35,25,20
+Zombie,Nigromante,20,30,35
+Odin,Vikingo,60,35,25
+Dragon,Bestia,70,50,40
+El Conquistador Jack,Mago,55,45,25
+Reina de las Sombras,Nigromante,40,45,30
+Bjorn El Bravo,Vikingo,70,40,30
+Cerberus,Bestia,80,60,50
+La Bruja Morgana,Mago,50,35,20
+Cientifico Loco Igor,Nigromante,30,40,45
+Ragnar,Vikingo,75,50,35
+Hydra,Bestia,90,70,55
+Valeria La Encantadora,Mago,45,40,25
+Captain Garfio,Nigromante,35,45,40
+Erik El Rojo,Vikingo,80,45,40
+Phoenix,Bestia,100,80,60
+El Misterioso Mago Enmascarado,Mago,60,50,30
+Finn El Humano,Vikinigo,50,60,40
+Ivar El Deshuesado,Vikingo,90,55,45
+Quimera,Bestia,110,90,70
+Luna,Mago,65,55,35
+Baron Von Bloodsucker,Nigromante,40,55,60
+Leif El Suertudo,Vikingo,85,50,45
+Thunderbird,Bestia,120,100,80
+El Mago Enigmatico,Mago,70,60,40
+Blackbeard El Maldecido,Nigromante,45,60,55
+Astrid LaFeroz,Vikingo,95,55,50
+Krampus,Bestia,130,110,90
+Aragon,Mago,75,65,45
+Rouge la Vampira,Nigromante,50,65,70
+Rollo,Vikingo,100,60,55
+Manticora,Bestia,140,120,100
+Houdini,Mago,80,70,50
+El Lich,Nigromante,55,70,75
+Sigrid El veloz,Vikingo,105,65,60
+El Rey Rata,Bestia,150,130,110
