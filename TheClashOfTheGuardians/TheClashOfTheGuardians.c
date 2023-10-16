@@ -20,7 +20,7 @@ typedef struct Guardian Guardian;
 Guardian* crearGuardian(char nombre[], int PV, int PA, int PD, char tipo[])
 {
     Guardian* nuevoGuardian = (Guardian*)malloc(sizeof(Guardian));
-    if (nuevoGuardian == NULL)
+    if(nuevoGuardian == NULL)
     {
         printf("Error: No se pudo asignar Memoria para el nuevo guardian.\n");
         exit(1);
@@ -40,9 +40,14 @@ void crearNuevaCarta(Guardian** pila);
 void cargarCartasDesdeArchivo(Guardian** pila);
 void mostrarCartas(Guardian* pila);
 void revolverCartas(Guardian** pila);
-int repartirCartas(Guardian** pila, Guardian** pilaJugador, Guardian** pilaComputadora);
-
+int repartirCartas(Guardian** pila, Guardian** pilaJugador, Guardian** pilaComputadora, Guardian** manoJugador, Guardian** manoComputadora);
+void BucleJuego(Guardian* pilaJugador, Guardian* pilaComputadora, Guardian* manoJugador, Guardian* manoComputadora);
+void mostrarManoJugador(Guardian* manoJugador);
+void mostrarManoComputadora(Guardian* manoComputadora);
 void push(Guardian** pila, Guardian* nuevaCarta);
+void enviarAlCampo(Guardian* manoJugador, Guardian* campoBatallaJugador[]);
+void TurnoComputadora(Guardian* manoComputadora, Guardian* campoBatallaJugador[], Guardian* campoBatallaComputadora[], int* VidasJugador, Guardian** pilaComputadora, int* numCartasManoComputadora);
+void mostrarCampoBatalla(Guardian* campoBatallaJugador[], Guardian* campoBatallaComputadora[]);
 Guardian* pop(Guardian** mazo);
 
 int main()
@@ -50,6 +55,8 @@ int main()
     Guardian* pila = NULL;
 	Guardian* pilaJugador = NULL;
 	Guardian* pilaComputadora = NULL;
+	Guardian* manoJugador = NULL;
+	Guardian* manoComputadora = NULL;
     bool cartasDisponibles = false;
 
     int opcion;
@@ -58,7 +65,7 @@ int main()
         mostrarMenu();
         scanf("%d", &opcion);
 
-        switch (opcion)
+        switch(opcion)
         {
         case 1:
         	system("cls");
@@ -66,16 +73,16 @@ int main()
             cartasDisponibles = true;
             break;
         case 2:
-		    system("cls"); // Limpiar la pantalla
+		    system("cls");
 		    if (cartasDisponibles)
 			{
-		        revolverCartas(&pila); // Llamar a la función para revolver las cartas
+		        revolverCartas(&pila);
 		        printf("Las cartas han sido revueltas ");
-		        repartirCartas(&pila, &pilaJugador, &pilaComputadora);
-		        printf("y repartidas\nAqui esta tu mazo:\n");
-		        mostrarCartas(pilaJugador);
-		        // Implementar lógica del juego y enfrentamientos aquí
-		    } else
+		        repartirCartas(&pila, &pilaJugador, &pilaComputadora, &manoJugador, &manoComputadora);
+		        printf("y repartidas.\nSe te han otorgado 15 cartas de las cuales 3 fueron a tu mano.\n");
+		        BucleJuego(pilaJugador, pilaComputadora, manoJugador, manoComputadora);
+		    }
+			else
 			{
 		        printf("No hay cartas disponibles para jugar. Crea nuevas cartas o carga desde un archivo.\n");
 		    }
@@ -102,7 +109,7 @@ int main()
     		system("cls");
             break;
         case 5:
-            // Implementar historial de la partida
+            // IMPLEMENTAR HISTORIAL
             break;
         case 6:
             printf("Cerrando el Juego...\n");
@@ -113,9 +120,9 @@ int main()
         }
     } while (opcion != 6);
 
-    // Liberar cartas de la pila
+    // LIBERAR CARTAS DE LA PILA
     Guardian* temp;
-    while (pila != NULL)
+    while(pila != NULL)
     {
         temp = pila;
         pila = pila->siguiente;
@@ -138,7 +145,7 @@ void mostrarMenu()
     printf("Seleccione una opcion: ");
 }
 
-//FUNCION PARA CREAR UNA CARTA NUEVA Y AGREGARLA A LA PILA ACTUALIZADA Y FUNCIONANDO
+//FUNCION PARA CREAR UNA CARTA NUEVA Y AGREGARLA A LA PILA
 void crearNuevaCarta(Guardian** pila)
 {
     system("cls");
@@ -169,7 +176,7 @@ void crearNuevaCarta(Guardian** pila)
     scanf("%d", &tipoNumero);
 
     char tipo[20];
-    switch (tipoNumero)
+    switch(tipoNumero)
     {
     case 1:
         strcpy(tipo, "Mago");
@@ -197,7 +204,7 @@ void crearNuevaCarta(Guardian** pila)
     system("cls");
 }
 
-//Cargar Cartas DESDE ARCHIVOS ACTUALIZADA Y FUNCIONANDO
+//Cargar Cartas DESDE ARCHIVOS
 void cargarCartasDesdeArchivo(Guardian** pila)
 {
     FILE *archivo;
@@ -206,7 +213,7 @@ void cargarCartasDesdeArchivo(Guardian** pila)
     scanf("%s", nombreArchivo);
 
     archivo = fopen(nombreArchivo, "r");
-    if (archivo == NULL)
+    if(archivo == NULL)
     {
         printf("No se pudo abrir el archivo.\n");
         printf("\nPresiona una tecla para continuar...");
@@ -216,7 +223,7 @@ void cargarCartasDesdeArchivo(Guardian** pila)
     }
 
     char linea[256];
-    while (fgets(linea, sizeof(linea), archivo) != NULL)
+    while(fgets(linea, sizeof(linea), archivo) != NULL)
     {
         char nombre[60], tipo[20];
         int PV, PA, PD;
@@ -227,7 +234,7 @@ void cargarCartasDesdeArchivo(Guardian** pila)
         }
         else
         {
-            printf("Error encontrado en la Linea: %s\n", linea);
+            printf("Error encontrado en la Linea de texto: %s\n", linea);
         }
     }
 
@@ -247,14 +254,15 @@ void push(Guardian** pila, Guardian* nuevaCarta)
 //FUNCION PARA QUITAR CARTAS A LA PILA
 Guardian* pop(Guardian** mazo)
 {
-    if (*mazo == NULL) {
+    if(*mazo == NULL)
+	{
         printf("El mazo está vacío.\n");
         return NULL;
     }
 
-    Guardian* carta = *mazo; // Obtén la primera carta del mazo
-    *mazo = (*mazo)->siguiente; // Actualiza el mazo para excluir la primera carta
-    carta->siguiente = NULL; // Marca la siguiente carta como NULL para evitar problemas
+    Guardian* carta = *mazo;
+    *mazo = (*mazo)->siguiente;
+    carta->siguiente = NULL;
 
     return carta;
 }
@@ -269,7 +277,6 @@ void mostrarCartas(Guardian* pila)
     {
         printf("%d. Nombre: %s, Tipo: %s, PV: %d, PA: %d, PD: %d\n",
                contador, temp->nombre, temp->tipo, temp->PV, temp->PA, temp->PD);
-
         temp = temp->siguiente;
         contador++;
     }
@@ -278,55 +285,338 @@ void mostrarCartas(Guardian* pila)
 //FUNCION PARA REVOLVER LAS CARTAS
 void revolverCartas(Guardian** pila)
 {
-    // Convertir la pila en un array
-    Guardian* cartasArray[60]; // Suponiendo un máximo de 60 cartas
+	
+    Guardian* cartasArray[60];
     int numCartas = 0;
     Guardian* temp = *pila;
-    while (temp != NULL) {
+    while (temp != NULL)
+	{
         cartasArray[numCartas] = temp;
         temp = temp->siguiente;
         numCartas++;
     }
-
-    // Revolver el array
+    
     srand(time(NULL));
-    for (int i = numCartas - 1; i > 0; i--) {
+    for(int i = numCartas - 1; i > 0; i--)
+	{
         int j = rand() % (i + 1);
         Guardian* temp = cartasArray[i];
         cartasArray[i] = cartasArray[j];
         cartasArray[j] = temp;
     }
 
-    // Volver a colocar las cartas en la pila
     *pila = NULL;
-    for (int i = 0; i < numCartas; i++) {
+    for(int i = 0; i < numCartas; i++)
+	{
         cartasArray[i]->siguiente = *pila;
         *pila = cartasArray[i];
     }
 }
 
 //FUNCION PARA REPARTIR LAS CARTAS
-int repartirCartas(Guardian** pila, Guardian** pilaJugador, Guardian** pilaComputadora)
+int repartirCartas(Guardian** pila, Guardian** pilaJugador, Guardian** pilaComputadora, Guardian** manoJugador, Guardian** manoComputadora)
 {
     int contador = 1;
     Guardian* temp = *pila;
-    while (temp != NULL && contador <= 30) {
+    while (temp != NULL && contador <= 30)
+	{
         Guardian* carta = crearGuardian(temp->nombre, temp->PV, temp->PA, temp->PD, temp->tipo);
-        if (contador <= 15) {
-            push(pilaJugador, carta); // Agrega las primeras 15 cartas al jugador
-        } else {
-            push(pilaComputadora, carta); // Agrega las siguientes 15 cartas a la computadora
+        if(contador <= 15)
+		{
+            push(pilaJugador, carta);
+        }
+		else
+		{
+            push(pilaComputadora, carta);
         }
         temp = temp->siguiente;
         contador++;
     }
 
-    // Elimina las cartas repartidas del pila principal
-    for (int i = 1; i <= 30; i++) {
+    for(int i = 1; i <= 30; i++)
+	{
         Guardian* temp = *pila;
         *pila = (*pila)->siguiente;
         free(temp);
     }
+    
+    for(int i = 0; i < 3; i++)
+	{
+        Guardian* carta = pop(pilaJugador);
+        if(carta != NULL)
+		{
+            push(manoJugador, carta);
+        }
+    }
+    
+    for(int i = 0; i < 3; i++)
+	{
+        Guardian* carta = pop(pilaComputadora);
+        if (carta != NULL)
+		{
+            push(manoComputadora, carta);
+        }
+    }
 
-    return contador - 1; // Devuelve el número total de cartas repartidas
+    return contador - 1;
+}
+
+//MOSTRAR LA MANO DEL JUGADOR
+void mostrarManoJugador(Guardian* manoJugador)
+{
+    Guardian* temp = manoJugador;
+    int contador = 1;
+
+    printf("Cartas en tu mano:\n");
+    while (temp != NULL) {
+        printf("%d. Nombre: %s, Tipo: %s, PV: %d, PA: %d, PD: %d\n",
+               contador, temp->nombre, temp->tipo, temp->PV, temp->PA, temp->PD);
+        temp = temp->siguiente;
+        contador++;
+    }
+}
+
+//MOSTAR LA MANO DE LA COMPUTADORA
+void mostrarManoComputadora(Guardian* manoComputadora)
+{
+    Guardian* temp = manoComputadora;
+    int contador = 1;
+
+    printf("Cartas en la mano de la computadora:\n");
+    while (temp != NULL)
+	{
+        printf("%d. Nombre: %s, Tipo: %s, PV: %d, PA: %d, PD: %d\n",
+               contador, temp->nombre, temp->tipo, temp->PV, temp->PA, temp->PD);
+        temp = temp->siguiente;
+        contador++;
+    }
+}
+
+//BUCLE DEL JUEGO
+void BucleJuego(Guardian* pilaJugador, Guardian* pilaComputadora, Guardian* manoJugador, Guardian* manoComputadora)
+{
+    Guardian* campoBatallaJugador[3] = {NULL, NULL, NULL};
+    Guardian* campoBatallaComputadora[3] = {NULL, NULL, NULL};
+    int numCartasManoComputadora = 3;
+    int cartaAtacante, cartaObjetivo;
+    int opcionJugador;
+    int VidasJugador = 5;
+    int VidasComputadora = 5;
+
+    do
+	{
+        printf("Es tu turno.\n");
+        mostrarManoJugador(manoJugador);
+        printf("\nQue Deseas hacer?\n");
+        printf("1. Atacar\n");
+        printf("2. Enviar carta\n");
+        printf("3. Sacar carta\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcionJugador);
+
+        switch(opcionJugador)
+		{
+            case 1:
+            	system("cls");
+            	mostrarCampoBatalla(campoBatallaJugador, campoBatallaComputadora);
+                printf("\nSelecciona con que guardian atacar(1-3): ");
+                scanf("%d", &cartaAtacante);
+                printf("Ahora cual sera tu objetivo? (1-3): ");
+                scanf("%d", &cartaObjetivo);
+                if (cartaAtacante >= 1 && cartaAtacante <= 3 && cartaObjetivo >= 1 && cartaObjetivo <= 3 &&
+                    campoBatallaJugador[cartaAtacante - 1] != NULL && campoBatallaComputadora[cartaObjetivo - 1] != NULL)
+                {
+                    Guardian* atacante = campoBatallaJugador[cartaAtacante - 1];
+                    Guardian* objetivo = campoBatallaComputadora[cartaObjetivo - 1];
+                    int danio = atacante->PA > objetivo->PD ? atacante->PA - objetivo->PD : 0;
+                    objetivo->PV -= danio;
+                    printf("Has atacado a %s con %s. puntos de PA inflingidos: %d\n", objetivo->nombre, atacante->nombre, danio);
+                    if(objetivo->PV <= 0)
+                    {
+                        printf("%s ha sido Vencido\n", objetivo->nombre);
+                        campoBatallaComputadora[cartaObjetivo - 1] = NULL;
+                    	(VidasComputadora)--;
+                    }
+                }
+                else
+                {
+                    printf("Eleccion invalida.\n");
+                }
+                break;
+            case 2:
+			    enviarAlCampo(manoJugador, campoBatallaJugador);
+			    break;
+			case 3:
+			    // Lógica para sacar carta del mazo
+			    break;
+            default:
+                printf("Opcion invalida.\n");
+                continue;
+        }
+        TurnoComputadora(manoComputadora, campoBatallaJugador, campoBatallaComputadora, &VidasJugador, &pilaComputadora, &numCartasManoComputadora);
+        mostrarCampoBatalla(campoBatallaJugador, campoBatallaComputadora);
+
+        // Verificar condiciones de fin del juego (implementación requerida)
+        
+        printf("\nPresiona una tecla para ir al siguiente turno...\n");
+        getch();
+        system("cls");
+    }while(VidasComputadora > 0 && VidasJugador > 0);
+}
+
+//ESTA FUNCION MUESTRA EL CAMPO DE BATALLA
+void mostrarCampoBatalla(Guardian* campoBatallaJugador[], Guardian* campoBatallaComputadora[])
+{
+    printf("Campo de Batalla:\n");
+    printf("-----------------------------------------------------------------------------------------------\n");
+    
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%d. %-30s", i + 1, campoBatallaJugador[i] ? campoBatallaJugador[i]->nombre : " ");
+    }
+    printf("\n");
+    
+    printf("-----------------------------------------------------------------------------------------------\n");
+    
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%d. %-30s", i + 1, campoBatallaComputadora[i] ? campoBatallaComputadora[i]->nombre : " ");
+    }
+    printf("\n");
+    
+    printf("-----------------------------------------------------------------------------------------------\n");
+}
+
+//FUNCION CON LA LOGICA PARA ENVIAR CARTAS AL CAMPO DE BATALLA PARA EL JUGADOR
+void enviarAlCampo(Guardian* manoJugador, Guardian* campoBatallaJugador[])
+{
+    int posicion;
+    printf("Selecciona una carta de tu mano para enviar al campo de batalla (1-3): ");
+    scanf("%d", &posicion);
+
+    if (posicion < 1 || posicion > 3)
+    {
+        printf("Posicion invalida.\n");
+        return;
+    }
+
+    if (campoBatallaJugador[posicion - 1] != NULL)
+    {
+        printf("Ya hay una carta en esa posicion.\n");
+        return;
+    }
+
+    Guardian* cartaSeleccionada = NULL;
+    Guardian* temp = manoJugador;
+    int contador = 1;
+    while (temp != NULL)
+    {
+        if (contador == posicion)
+        {
+            cartaSeleccionada = temp;
+            break;
+        }
+        temp = temp->siguiente;
+        contador++;
+    }
+
+    if (cartaSeleccionada == NULL)
+    {
+        printf("No hay ninguna carta en esa posicion.\n");
+        return;
+    }
+
+    campoBatallaJugador[posicion - 1] = cartaSeleccionada;
+    printf("\nHas enviado \"%s\" al campo de batalla.\n", cartaSeleccionada->nombre);
+}
+
+//FUNCION ENCARGADA DE LOS TURNOS DE LA COMPUTADORA
+void TurnoComputadora(Guardian* manoComputadora, Guardian* campoBatallaJugador[], Guardian* campoBatallaComputadora[], int* VidasJugador, Guardian** pilaComputadora, int* numCartasManoComputadora)
+{
+    printf("\nTurno de la Computadora...\n");
+    int turnoComputadora = 1;
+    
+    int opcion = rand() % 3 + 1;
+	switch (opcion)
+	{
+        case 1:
+            for (int i = 0; i < 3; i++)
+		    {
+		        if (campoBatallaComputadora[i] != NULL)
+		        {
+		            int cartaAtacante = i + 1;
+		            int cartaObjetivo = rand() % 3 + 1;
+		
+		            Guardian* atacante = campoBatallaComputadora[cartaAtacante - 1];
+		            Guardian* objetivo = campoBatallaJugador[cartaObjetivo - 1];
+		
+		            if (objetivo != NULL)
+		            {
+		                int danio = atacante->PA > objetivo->PD ? atacante->PA - objetivo->PD : 0;
+		                objetivo->PV -= danio;
+		                printf("La Computadora ha atacado a \"%s\" con \"%s\". Puntos de PA inflingidos: %d\n", objetivo->nombre, atacante->nombre, danio);
+		
+		                if (objetivo->PV <= 0)
+		                {
+		                    printf("\"%s\" Ha sido Vencido\n", objetivo->nombre);
+		                    campoBatallaJugador[cartaObjetivo - 1] = NULL;
+		                    (*VidasJugador)--;
+		                }
+		                turnoComputadora--;
+		            }
+		        }
+		    }
+            break;
+        case 2:
+        	for(int i = 0; i < 3; i++)
+        	{
+			    if (manoComputadora != NULL && campoBatallaComputadora[i] == NULL && *numCartasManoComputadora > 0)
+			    {
+			        Guardian* cartaSeleccionada = pop(&manoComputadora);
+			        campoBatallaComputadora[i] = cartaSeleccionada;
+			        printf("La Computadora ha enviado \"%s\" al campo de batalla.\n", cartaSeleccionada->nombre);
+			        (*numCartasManoComputadora)--;
+			        turnoComputadora--;
+			    }
+			}
+            break;
+        case 3:
+            if (*numCartasManoComputadora < 3 && *pilaComputadora != NULL)
+		    {
+		        Guardian* cartaNueva = pop(pilaComputadora);
+		        push(&manoComputadora, cartaNueva);
+		        printf("La Computadora ha sacado una nueva carta del mazo.\n");
+		        (*numCartasManoComputadora)++;
+		        turnoComputadora--;
+		    }
+            break;
+        default:
+            for (int i = 0; i < 3; i++)
+		    {
+		        if (campoBatallaComputadora[i] != NULL)
+		        {
+		            int cartaAtacante = i + 1;
+		            int cartaObjetivo = rand() % 3 + 1;
+		
+		            Guardian* atacante = campoBatallaComputadora[cartaAtacante - 1];
+		            Guardian* objetivo = campoBatallaJugador[cartaObjetivo - 1];
+		
+		            if (objetivo != NULL)
+		            {
+		                int danio = atacante->PA > objetivo->PD ? atacante->PA - objetivo->PD : 0;
+		                objetivo->PV -= danio;
+		                printf("La Computadora ha atacado a \"%s\" con \"%s\". Puntos de PA inflingidos: %d\n", objetivo->nombre, atacante->nombre, danio);
+		
+		                if (objetivo->PV <= 0)
+		                {
+		                    printf("\"%s\" Ha sido Vencido\n", objetivo->nombre);
+		                    campoBatallaJugador[cartaObjetivo - 1] = NULL;
+		                    (*VidasJugador)--;
+		                }
+		                turnoComputadora--;
+		            }
+		        }
+		    }
+            break;
+    }
 }

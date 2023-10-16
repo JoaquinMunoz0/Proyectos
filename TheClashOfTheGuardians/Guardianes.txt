@@ -19,11 +19,11 @@ Cientifico Loco Igor,Nigromante,30,40,45
 Ragnar,Vikingo,75,50,35
 Hydra,Bestia,90,70,55
 Valeria La Encantadora,Mago,45,40,25
-Captain Garfio,Nigromante,35,45,40
+Capitan Garfio,Nigromante,35,45,40
 Erik El Rojo,Vikingo,80,45,40
 Phoenix,Bestia,100,80,60
 El Misterioso Mago Enmascarado,Mago,60,50,30
-Finn El Humano,Vikinigo,50,60,40
+Finn El Humano,Vikingo,50,60,40
 Ivar El Deshuesado,Vikingo,90,55,45
 Quimera,Bestia,110,90,70
 Luna,Mago,65,55,35
@@ -42,3 +42,10 @@ Houdini,Mago,80,70,50
 El Lich,Nigromante,55,70,75
 Sigrid El veloz,Vikingo,105,65,60
 El Rey Rata,Bestia,150,130,110
+La Rana Rene,Bestia,200,100,90
+Pikachu,Pokemon,63,115,24
+Charizard,Pokemon,130,115,45
+Lucario,Pokemon,125,100,50
+Gardevoir,Pokemon,100,160,30
+Buda,Dios,500,500,150
+Zeus,Dios,500,500,151
