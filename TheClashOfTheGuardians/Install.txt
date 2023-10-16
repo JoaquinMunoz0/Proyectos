@@ -1,0 +1,3 @@
+El programa fue desarrollado en C, en el programa Dev C++,
+sin configurar nada del compilador, solo su configuracion Default,
+el Archivo .txt se encuentra en GitHub Junto al Codigo y al Readme.
