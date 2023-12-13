@@ -24,6 +24,7 @@ Este proyecto ha sido desarrollado y probado en Visual Studio Code con las exten
 
     Para compilar el programa basta con tener instalada la extension de C/C++ Compile Run y darle a la tecla F6 o bien darle al boton de Play que se encuentra
     en la esquina superior derecha de la pantalla.
+   
 ![Captura de pantalla 2023-12-13 150921](https://github.com/JoaquinMunoz0/Proyectos/assets/145179105/7a3b3b9d-83db-47e3-bce6-83f58c1de522)
 
 ## Ejecución del Programa
