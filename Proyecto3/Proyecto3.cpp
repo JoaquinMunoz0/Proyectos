@@ -294,7 +294,7 @@ void bubbleSort(vector<int>& arr)
 
 // ------------------------------------ FUNCION PARA MEDIR EL TIEMPO DE EJECUCION DE CADA ALGORITMO --------------------------
 template <typename Func>
-void medirTiempo(Func algoritmo, vector<int>& arr, const string& nombreAlgoritmo)
+void medirTiempo(Func algoritmo, vector<int> arr, const string& nombreAlgoritmo)
 {
     auto inicio = high_resolution_clock::now();
 
@@ -335,51 +335,79 @@ void medirTiempoQuickSort(vector<int>& arr)
 
 // ------------------------------------ FUNCION PARA HACER LAS CARRERAS DE LOS ALGORITMOS --------------------------
 
-void carreraSinDuplicados(auto sinDuplicados)
+void carreraSinDuplicados(const vector<int>& sinDuplicadosOriginal)
 {
-    cout << "\n ------ Carrera con arreglo sin duplicados ------\n\n";
+    vector<int> sinDuplicados = sinDuplicadosOriginal;
+    cout << "\n\n ------ Carrera con arreglo sin Duplicados ------\n\n";
     medirTiempo(selectionSort, sinDuplicados, "Selection Sort");
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempo(insertionSort, sinDuplicados, "Insertion Sort");
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempo(shellSort, sinDuplicados, "Shell Sort");
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempo(bubbleSort, sinDuplicados, "Bubble Sort");
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempoMergeSort(sinDuplicados);
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempoHeapSort(sinDuplicados);
+    sinDuplicados = sinDuplicadosOriginal;
     medirTiempoQuickSort(sinDuplicados);
 }
 
-void carreraDuplicados(auto conDuplicados)
+void carreraDuplicados(const vector<int>& conDuplicadosOriginal)
 {
+    vector<int> conDuplicados = conDuplicadosOriginal;
     cout << "\n\n ------ Carrera con arreglo con duplicados ------\n\n";
     medirTiempo(selectionSort, conDuplicados, "Selection Sort");
+    conDuplicados = conDuplicadosOriginal;
     medirTiempo(insertionSort, conDuplicados, "Insertion Sort");
+    conDuplicados = conDuplicadosOriginal;
     medirTiempo(shellSort, conDuplicados, "Shell Sort");
+    conDuplicados = conDuplicadosOriginal;
     medirTiempo(bubbleSort, conDuplicados, "Bubble Sort");
+    conDuplicados = conDuplicadosOriginal;
     medirTiempoMergeSort(conDuplicados);
+    conDuplicados = conDuplicadosOriginal;
     medirTiempoHeapSort(conDuplicados);
+    conDuplicados = conDuplicadosOriginal;
     medirTiempoQuickSort(conDuplicados);
 }
 
-void carreraOrdenados(auto ordenados)
+void carreraOrdenados(const vector<int>& ordenadosOriginal)
 {
+    vector<int> ordenados = ordenadosOriginal;
     cout << "\n\n ------ Carrera con arreglo ordenado ------\n\n";
     medirTiempo(selectionSort, ordenados, "Selection Sort");
+    ordenados = ordenadosOriginal;
     medirTiempo(insertionSort, ordenados, "Insertion Sort");
+    ordenados = ordenadosOriginal;
     medirTiempo(shellSort, ordenados, "Shell Sort");
+    ordenados = ordenadosOriginal;
     medirTiempo(bubbleSort, ordenados, "Bubble Sort");
+    ordenados = ordenadosOriginal;
     medirTiempoMergeSort(ordenados);
+    ordenados = ordenadosOriginal;
     medirTiempoHeapSort(ordenados);
+    ordenados = ordenadosOriginal;
     medirTiempoQuickSort(ordenados);
 }
 
-void carreraInversamenteOrdenados(auto inversamente)
+void carreraInversamenteOrdenados(const vector<int>& inversamenteOriginal)
 {
+    vector<int> inversamente = inversamenteOriginal;
     cout << "\n\n ------ Carrera con arreglo inversamente ordenado ------\n\n";
     medirTiempo(selectionSort, inversamente, "Selection Sort");
+    inversamente = inversamenteOriginal;
     medirTiempo(insertionSort, inversamente, "Insertion Sort");
+    inversamente = inversamenteOriginal;
     medirTiempo(shellSort, inversamente, "Shell Sort");
+    inversamente = inversamenteOriginal;
     medirTiempo(bubbleSort, inversamente, "Bubble Sort");
+    inversamente = inversamenteOriginal;
     medirTiempoMergeSort(inversamente);
+    inversamente = inversamenteOriginal;
     medirTiempoHeapSort(inversamente);
+    inversamente = inversamenteOriginal;
     medirTiempoQuickSort(inversamente);
 }
 
