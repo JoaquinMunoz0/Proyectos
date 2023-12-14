@@ -37,3 +37,8 @@ En el proyecto se generan una variedad de arreglos para realizar las comparacion
 ### Carreras de Algoritmos
 
 El programa realiza carreras de algoritmos, midiendo el tiempo de ejecución para diferentes arreglos y presentando los resultados.
+
+## Presentacion del Proyecto
+Ahora en Youtube se encuentra un video de presentacion del proyecto, solo debe darle click al siguiente link:
+
+https://youtu.be/mq62J_Ta2lU
